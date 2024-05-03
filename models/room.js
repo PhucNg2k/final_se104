@@ -14,7 +14,7 @@ const roomSchema = mongoose.Schema({
     required: true,
   },
   rentperday: {
-    type: Number,
+    type: Number, 
     required: true,
   },
   imageurls: [],
