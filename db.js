@@ -4,7 +4,7 @@ var mongoURL = 'mongodb+srv://Carrot:thinhprohero@atlascluster.oi3m0pm.mongodb.n
 
 mongoose.connect(mongoURL , {useUnifiedTopology : true , useNewUrlParser:true})
 
-var connection = mongoose.connection
+var connection = mongoose.connections
 
 connection.on('error' , ()=>{
     console.log('Mongo DB Connection failed')
