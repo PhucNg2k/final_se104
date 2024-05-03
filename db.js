@@ -1,10 +1,10 @@
 const mongoose=require("mongoose");
 
-var mongoURL = 'mongodb+srv://Carrot:thinhprohero@atlascluster.oi3m0pm.mongodb.net/'
+var mongoURL = 'mongodb+srv://Carrot:thinhprohero@atlascluster.oi3m0pm.mongodb.net/BE'
 
 mongoose.connect(mongoURL , {useUnifiedTopology : true , useNewUrlParser:true})
 
-var connection = mongoose.connections
+var connection = mongoose.connection
 
 connection.on('error' , ()=>{
     console.log('Mongo DB Connection failed')
