@@ -10,7 +10,6 @@ function Homescreen() {
 
         const fetchData = async () => {
             try {
-                console.log('123')
                 const data = (await axios.get('/api/rooms/getallrooms')).data;
                 console.log('data', data.rooms.length);
                 
