@@ -41,6 +41,7 @@ code {
 
 .bigimg {
    height: 400px !important;
+   border-radius: 5px !important;
 }
 
 h1 {

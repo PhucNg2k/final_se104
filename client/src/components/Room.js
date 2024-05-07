@@ -39,28 +39,35 @@ function Room({ room }) {
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
+        size='lg'
       >
-        <Modal.Header closeButton>
+        <Modal.Header >
           <Modal.Title>{room.name}</Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
-            <Carousel>
+            
+            <Carousel prevLabel='' nextLabel=''>
                 { room.imageurls.map( url => {
                     return <Carousel.Item>
                         <img 
                             className="d-block w-100 bigimg"
                             src={url}
+                            alt=""
                         />
                     </Carousel.Item>
                 })}
       
             </Carousel>
+            <p>{room.description}</p>
         </Modal.Body>
+
+
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary">Understood</Button>
+          
         </Modal.Footer>
       </Modal>
 
