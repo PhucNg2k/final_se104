@@ -28,7 +28,7 @@ function Room({ room }) {
                 <button className="btn btn-primary" onClick={handleShow}>View Details</button>
             </div>
 
-
+        
 
       </div>
 
@@ -42,7 +42,7 @@ function Room({ room }) {
         size='lg'
       >
         <Modal.Header >
-          <Modal.Title>{room.name}</Modal.Title>
+          <Modal.Title>{room.name} </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
