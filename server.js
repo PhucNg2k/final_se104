@@ -9,4 +9,4 @@ app.use("/api/rooms",roomsRoute)
 
 const port  = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`Node server started using nodemon`)); 
+app.listen(port, () => console.log(`Node server port ${port} started using nodemon`)); 
