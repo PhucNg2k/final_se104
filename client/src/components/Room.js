@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import {Modal, Button, Carousel, CardHeader} from 'react-bootstrap'
-
+import {Modal, Button, Carousel} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 
 function Room({ room }) {
 
@@ -25,6 +25,9 @@ function Room({ room }) {
             <p>Type: {room.type}</p>
             </b>
             <div style={{float: 'right'}}>
+              <Link to={`/book/${room._id}`}>
+                <button className="btn btn-primary m-2">Book now</button>
+              </Link>
                 <button className="btn btn-primary" onClick={handleShow}>View Details</button>
             </div>
 
