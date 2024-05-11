@@ -1,13 +1,12 @@
-import React from 'react';
+import React from "react";
 
-function Error(){
-    return(
-        <div>
-            <div class="alert alert-warning" role="alert">
-                Something went wrong, please try again later...
-            </div>
-        </div>
-    );
+function Error() {
+  return (
+    <div>
+      <div class="alert alert-danger" role="alert">
+        Something went wrong, please try again
+      </div> 
+    </div>
+  );
 }
-
-export default Error
+export default Error;
