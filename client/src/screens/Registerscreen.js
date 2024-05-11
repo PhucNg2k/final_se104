@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Loader from "../components/Loader";
+import Error from "../components/Error";
+import Success from "../components/Success";
 import axios from "axios";
 
 function Registerscreen() {
@@ -6,6 +9,10 @@ function Registerscreen() {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [cpassword, setcpassword] = useState("");
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
+  const [success, setSuccess] = useState();
 
   async function register() {
     if (password == cpassword) {
@@ -17,9 +24,20 @@ function Registerscreen() {
       }
       
       try{
-        const result = await axios.post('/api/users/register',user).data
+        setLoading(true);
+        const result = await axios.post('/api/users/register',user).data;
+        setLoading(false);
+        setSuccess(true);
+
+        setname("");
+        setemail("");
+        setpassword("");
+        setcpassword("");
+
       } catch(error){
-        console.log(error)
+        console.log(error);
+        setLoading(false);
+        setError(true);
       }
 
     } else {
@@ -29,8 +47,12 @@ function Registerscreen() {
 
   return (
     <div>
+        {loading && (<Loader/>)}
+        {error && (<Error/>)}
+        
       <div className="row justify-content-center mt-5 ">
         <div className="col-md-5 mt-5">
+        {success && (<Success message="Registration success"/>)}
           <div className="bs">
             <h2>Register</h2>
             <input

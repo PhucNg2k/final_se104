@@ -6,9 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: "Montserrat", sans-serif  !important;
-  font-optical-sizing: auto;
-  font-weight: 400;
+  font-family: "Montserrat", sans-serif  !important; 
   font-style: normal;
 
 }
@@ -72,4 +70,8 @@ h2{
   padding: 10px;
   font-weight: bold !important;
   text-align: center;
+}
+
+.dropdown-toggle{
+  border: 0px solid black !important;
 }
