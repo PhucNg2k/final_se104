@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import moment from "moment";
+import Loader from "../components/Loader";
+import Error from "../components/Error";
 
 function Bookingscreen(match) {
   const [loading, setLoading] = useState(true);
@@ -34,36 +35,13 @@ function Bookingscreen(match) {
     };
 
     fetchData();
-    
   }, []);
-
-  
-
-  async function bookRoom(){
-    const bookingDetails = {
-      room,
-      userid: JSON.parse( localStorage.getItem('currentUser'))._id,
-      fromdate,
-      todate,
-      totalamount,
-      totaldays
-    }
-
-    try {
-      const result = await axios.post('/api/bookings/bookroom ', bookingDetails)
-    } catch (error){
-
-    }
-  }
-
 
   return (
     <div className="m-5">
       {loading ? (
-        <h1>Loading...</h1>
-      ) : error ? (
-        <h1>Error...</h1>
-      ) : (
+        <Loader />
+      ) : room ? (
         <div>
           <div className="row justify-content-center mt-5 bs">
             <div className="col-md-6">
@@ -99,6 +77,8 @@ function Bookingscreen(match) {
             </div>
           </div>
         </div>
+      ) : (
+        <Error />
       )}
     </div>
   );

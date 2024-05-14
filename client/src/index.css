@@ -6,9 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: "Montserrat", sans-serif  !important;
-  font-optical-sizing: auto;
-  font-weight: 400;
+  font-family: "Montserrat", sans-serif  !important; 
   font-style: normal;
 
 }
@@ -55,8 +53,25 @@ h1 {
 }
 
 .bs {
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  box-shadow: rgba(0, 0, 0, 0.36) 0px 5px 15px;
   margin-top: 20px !important;
   border-radius: 5px !important;
   padding: 20px !important;
 } 
+
+input{
+  box-shadow: None !important;
+  margin-top: 10px;
+  border: 1px solid black !important;
+}
+
+h2{
+  font-size: 30px !important;
+  padding: 10px;
+  font-weight: bold !important;
+  text-align: center;
+}
+
+.dropdown-toggle{
+  border: 0px solid black !important;
+}
