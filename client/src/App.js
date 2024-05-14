@@ -15,7 +15,7 @@ function App() {
       
       <Routes>
         <Route path='/home' element={<Homescreen />} />
-        <Route path='/book/:roomid' exact Component={Bookingscreen} />
+        <Route path='/book/:roomid/:fromdate/:todate' exact Component={Bookingscreen} />
       
       
       </Routes>
