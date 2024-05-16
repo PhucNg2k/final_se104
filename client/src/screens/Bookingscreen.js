@@ -15,7 +15,7 @@ function Bookingscreen(match) {
 
   const totaldays = moment.duration(lastdate.diff(firstdate)).asDays() + 1;
 
-  const totalamount = totaldays * room.rentperday;
+  const [totalamount, settotalamount] = useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,7 +25,9 @@ function Bookingscreen(match) {
         ).data;
 
         setRoom(data);
-
+        settotalamount(room ?  room.room.rentperday * totaldays : 0)  
+        
+        console.log( data)
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -46,6 +48,8 @@ function Bookingscreen(match) {
       totalamount,
       totaldays,
     };
+
+    
 
     try {
       const result = await axios.post("/api/bookings/bookroom", bookingDetails);
@@ -86,7 +90,7 @@ function Bookingscreen(match) {
                   <hr />
                   <p>Total days : {totaldays}</p>
                   <p>Rent per day : {room.room.rentperday}</p>
-                  <p>Total Amount : {totalamount}</p>
+                  <p>Total Amount : {room.room.rentperday*totaldays}</p>
                 </b>
               </div>
 
