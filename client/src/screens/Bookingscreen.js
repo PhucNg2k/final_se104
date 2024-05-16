@@ -3,20 +3,20 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
-import moment from "moment";
 
 function Bookingscreen(match) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [room, setRoom] = useState();
-
+ 
   let { roomid, fromdate, todate } = useParams();
   const firstdate = moment(fromdate , 'DD-MM-YYYY')
   const lastdate = moment(todate , 'DD-MM-YYYY')
 
   const totaldays = moment.duration(lastdate.diff(firstdate)).asDays()+1
-  const [totalamount, settotalamount] = useState()
 
+
+  const totalamount = totaldays * room.rentperday
   useEffect(() => {
     const fetchData = async () => {
       try {
