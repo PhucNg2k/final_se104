@@ -13,6 +13,9 @@ function Homescreen() {
     const [rooms, setRooms] = useState([])
     const [loading, setLoading] = useState()
     const [error, setError] = useState()
+    const [fromdate, setfromdate] = useState()
+    const [todate, settodate] = useState()
+
     useEffect(() => {
 
         const fetchData = async () => {
@@ -34,13 +37,27 @@ function Homescreen() {
     fetchData(); // Call the async function immediately
   }, []);
 
+  function filterByDate(dates){
+    setfromdate( dates[0].format('DD-MM-YYYY'))
+    settodate( dates[1].format('DD-MM-YYYY'))
+  }
+
 
     return (
         <div className='container'>
+            
+            <div className='row mt-5'>
+                <div className='col-md-3'>
+                    <RangePicker format='DD-MM-YYY' onChange={filterByDate} />
+                </div>
+
+            </div>
+
+
             <div className='row justify-content-center mt-5'>
-                {loading ? (<h1>Loading...</h1>) : error ? (<h1>Error</h1>) : ( rooms.map( (room, index) => {
+                {loading ? <Loader /> : error ? <Error/> : ( rooms.map( (room, index) => {
                     return <div className='col-md-9 mt-2' key={index}>
-                        <Room room={room} />
+                        <Room room={room} fromdate={fromdate} todate={todate} />
                     </div>;
                     })
                 ) }

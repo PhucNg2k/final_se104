@@ -8,6 +8,7 @@ const bookingSchema = mongoose.Schema({
     roomid: {
         type: String, required: true
     },
+    
     userid: {
         type: String, required: true
     },

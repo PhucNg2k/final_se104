@@ -3,11 +3,13 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
+import moment from "moment";
 
 function Bookingscreen(match) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [room, setRoom] = useState();
+
   let { roomid, fromdate, todate } = useParams();
   const firstdate = moment(fromdate , 'DD-MM-YYYY')
   const lastdate = moment(todate , 'DD-MM-YYYY')
@@ -22,9 +24,9 @@ function Bookingscreen(match) {
         const data = (
           await axios.post("/api/rooms/getroombyid", { roomid: roomid })
         ).data;
-
+        
         setRoom(data);
-        settotalamount(room ?  room.room.rentperday * totaldays : 0)
+        settotalamount( data.room.rentperday * totaldays)
         
         setLoading(false);
       } catch (error) {
@@ -36,6 +38,28 @@ function Bookingscreen(match) {
 
     fetchData();
   }, []);
+
+
+  async function bookRoom(){
+
+      const bookingDetails = {
+
+        room,
+        userid: JSON.parse( localStorage.getItem('currentUser'))._id,
+        fromdate,
+        todate,
+        totalamount,
+        totaldays 
+      }
+
+      try {
+        const result = await axios.post('/api/bookings/bookroom', bookingDetails)
+        
+      } catch ( error) {
+        console.log(error)
+      }
+
+}
 
   return (
     <div className="m-5">
@@ -54,7 +78,7 @@ function Bookingscreen(match) {
                 <h1>Booking Details</h1>
                 <hr />
                 <b>
-                  <p>Name: </p>
+                  <p>Name: {JSON.parse(localStorage.getItem('currentUser')).name} </p>
                   <p>From Date: {fromdate} </p>
                   <p>To Date: {todate} </p>
                   <p>Max Count: {room.room.maxcount}</p>
@@ -67,7 +91,7 @@ function Bookingscreen(match) {
                   <hr />
                   <p>Total days : {totaldays}</p>
                   <p>Rent per day : {room.room.rentperday}</p>
-                  <p>Total Amount : { room.room.rentperday * totaldays }</p>
+                  <p>Total Amount : {totalamount}</p>
                 </b>
               </div>
 
