@@ -3,20 +3,19 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
-
+import moment from "moment";
 function Bookingscreen(match) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [room, setRoom] = useState();
- 
+
   let { roomid, fromdate, todate } = useParams();
-  const firstdate = moment(fromdate , 'DD-MM-YYYY')
-  const lastdate = moment(todate , 'DD-MM-YYYY')
+  const firstdate = moment(fromdate, "DD-MM-YYYY");
+  const lastdate = moment(todate, "DD-MM-YYYY");
 
-  const totaldays = moment.duration(lastdate.diff(firstdate)).asDays()+1
+  const totaldays = moment.duration(lastdate.diff(firstdate)).asDays() + 1;
 
-
-  const totalamount = totaldays * room.rentperday
+  const totalamount = totaldays * room.rentperday;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,10 +23,9 @@ function Bookingscreen(match) {
         const data = (
           await axios.post("/api/rooms/getroombyid", { roomid: roomid })
         ).data;
-        
+
         setRoom(data);
-        settotalamount( data.room.rentperday * totaldays)
-        
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -39,27 +37,22 @@ function Bookingscreen(match) {
     fetchData();
   }, []);
 
+  async function bookRoom() {
+    const bookingDetails = {
+      room,
+      userid: JSON.parse(localStorage.getItem("currentUser"))._id,
+      fromdate,
+      todate,
+      totalamount,
+      totaldays,
+    };
 
-  async function bookRoom(){
-
-      const bookingDetails = {
-
-        room,
-        userid: JSON.parse( localStorage.getItem('currentUser'))._id,
-        fromdate,
-        todate,
-        totalamount,
-        totaldays 
-      }
-
-      try {
-        const result = await axios.post('/api/bookings/bookroom', bookingDetails)
-        
-      } catch ( error) {
-        console.log(error)
-      }
-
-}
+    try {
+      const result = await axios.post("/api/bookings/bookroom", bookingDetails);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="m-5">
@@ -78,7 +71,9 @@ function Bookingscreen(match) {
                 <h1>Booking Details</h1>
                 <hr />
                 <b>
-                  <p>Name: {JSON.parse(localStorage.getItem('currentUser')).name} </p>
+                  <p>
+                    Name: {JSON.parse(localStorage.getItem("currentUser")).name}{" "}
+                  </p>
                   <p>From Date: {fromdate} </p>
                   <p>To Date: {todate} </p>
                   <p>Max Count: {room.room.maxcount}</p>
@@ -96,7 +91,9 @@ function Bookingscreen(match) {
               </div>
 
               <div style={{ float: "right" }}>
-                <button className="btn btn-primary" onClick={bookRoom}>Pay Now</button>
+                <button className="btn btn-primary" onClick={bookRoom}>
+                  Pay Now
+                </button>
               </div>
             </div>
           </div>
