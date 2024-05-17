@@ -27,7 +27,7 @@ function Bookingscreen(match) {
         setRoom(data);
         settotalamount(room ?  room.room.rentperday * totaldays : 0)  
         
-        console.log( data)
+        
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
