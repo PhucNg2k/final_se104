@@ -4,6 +4,7 @@ import axios from "axios";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 import moment from "moment";
+import StripeCheckout from 'react-stripe-checkout'
 function Bookingscreen(match) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -58,6 +59,13 @@ function Bookingscreen(match) {
     }
   }
 
+
+  function onToken(token){
+    console.log(token)
+
+  }
+
+
   return (
     <div className="m-5">
       {loading ? (
@@ -95,9 +103,13 @@ function Bookingscreen(match) {
               </div>
 
               <div style={{ float: "right" }}>
-                <button className="btn btn-primary" onClick={bookRoom}>
-                  Pay Now
-                </button>
+                <button className="btn btn-primary" onClick={bookRoom}> Pay Now </button>
+
+                <StripeCheckout
+                    token={onToken}
+                    stripeKey=""
+                />
+
               </div>
             </div>
           </div>

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Bookingscreen from './screens/Bookingscreen';
 import Registerscreen from './screens/Registerscreen';
 import Loginscreen from './screens/Loginscreen';
+import Profilescreen from './screens/Profilescreen';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       
         <Route path='/register' exact Component={Registerscreen}/>
         <Route path='/login' exact Component={Loginscreen}/>
+        <Route path='/profile' exact Component={Profilescreen}/>
       </Routes>
       
       
