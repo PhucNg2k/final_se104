@@ -10,6 +10,10 @@ import { useAsyncError } from 'react-router-dom';
 const { RangePicker } = DatePicker;
 function Homescreen() {
     
+    console.log(JSON.parse(localStorage.getItem("currentUser")).name)
+    console.log(JSON.parse(localStorage.getItem("currentUser")).email)
+    console.log(JSON.parse(localStorage.getItem("currentUser")).isAdmin)
+
     const [rooms, setRooms] = useState([])
     const [loading, setLoading] = useState()
     const [error, setError] = useState()
