@@ -8,6 +8,7 @@ import Registerscreen from './screens/Registerscreen';
 import Loginscreen from './screens/Loginscreen';
 import Profilescreen from './screens/Profilescreen';
 import Adminscreen from './screens/Adminscreen';
+import Landingscreen from './screens/Landingscreen';
 
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
         <Route path='/profile' exact Component={Profilescreen}/>
       
         <Route path='/admin' exact Component={Adminscreen}/>
-      
+        <Route path='/' exact Component={Landingscreen}/>
       </Routes>
       
       
