@@ -57,61 +57,58 @@ function Homescreen() {
     //console.log(duplicaterooms)
   }, [rooms]);
 
-  function filterByDate(dates){
-    const fromdate = dates[0].format('DD-MM-YYYY')
-    const todate =  dates[1].format('DD-MM-YYYY')
-
-    setfromdate( dates[0].format('DD-MM-YYYY') )
-    settodate( dates[1].format('DD-MM-YYYY') )
-    console.log(dates[0].format("DD-MM-YYYY"));
-    console.log(dates[1].format("DD-MM-YYYY"));
-
-    console.log( fromdate)
-    console.log( todate)
-    
-    let temprooms = []
-    let availability = false
-    for( const room of duplicaterooms){
-        console.log(room)
-        //availability = false;
-        if( room.currentbookings.length > 0){
-           
-                for (const booking of room.currentbookings){
-                    // check between
-                    console.log(booking.fromdate)
-                    console.log( booking.todate)
-                    console.log( availability )
-                    if (  ( !moment(fromdate).isBetween(booking.fromdate, booking.todate, '[]' ))
-                    &&    ( !moment(todate).isBetween(booking.fromdate, booking.todate, '[]' )) )  {
-                        
-                        console.log(moment(fromdate).isBetween(booking.fromdate, booking.todate, '[]' ))
-                        
-                        console.log(moment(todate).isBetween(booking.fromdate, booking.todate, '[]' ))
-                        
-                        if ( // check equal
-                            fromdate !== booking.fromdate &&
-                            fromdate !== booking.todate &&
-                            todate !== booking.fromdate &&
-                            todate !== booking.todate
-                        ) {
-                            availability = true;
-                        }
-                    }
-                }
-                
-        
-        }
-
-        if (availability === true || room.currentbookings.length === 0){
-            temprooms.push( room )
-        }
-    
-        console.log( temprooms)
-        
-        setRooms(temprooms);
-        
+  function filterByDate(dates) {
+    if (!dates || dates.length === 0) {
+        // If dates are null or empty, reset the rooms to the initial state
+        setRooms(duplicaterooms);
+        setfromdate(null);
+        settodate(null);
+        return;
     }
+
+    const fromdate = dates[0].format('DD-MM-YYYY');
+    const todate = dates[1].format('DD-MM-YYYY');
+
+    setfromdate(fromdate);
+    settodate(todate);
+
+    let temprooms = [];
+    let availability = false;
+
+    for (const room of duplicaterooms) {
+        availability = false;
+
+        if (room.currentbookings.length > 0) {
+            for (const booking of room.currentbookings) {
+                const bookingStart = moment(booking.fromdate, 'DD-MM-YYYY');
+                const bookingEnd = moment(booking.todate, 'DD-MM-YYYY');
+                const from = moment(fromdate, 'DD-MM-YYYY');
+                const to = moment(todate, 'DD-MM-YYYY');
+
+                if (
+                    from.isBetween(bookingStart, bookingEnd, undefined, '[]') ||
+                    to.isBetween(bookingStart, bookingEnd, undefined, '[]') ||
+                    bookingStart.isBetween(from, to, undefined, '[]') ||
+                    bookingEnd.isBetween(from, to, undefined, '[]')
+                ) {
+                    availability = false;
+                    break;
+                } else {
+                    availability = true;
+                }
+            }
+        } else {
+            availability = true;
+        }
+
+        if (availability) {
+            temprooms.push(room);
+        }
+    }
+
+    setRooms(temprooms);
 }
+
 
     function filterByDate1(dates) {
     setfromdate(dates[0].format('DD-MM-YYYY'));
@@ -146,16 +143,20 @@ function Homescreen() {
     }
 
     function filterbyType(e) {
-
-        
-        if (e !== 'all') {
-            const temprooms = duplicaterooms.filter( room => room.type.toLowerCase() == e.toLowerCase())
+        const selectedType = e.toLowerCase();
+    
+        if (selectedType !== 'all') {
+            const temprooms = duplicaterooms.filter(room => room.type.toLowerCase() === selectedType);
             setRooms(temprooms);
         } else {
+            // If 'All' is selected, reset to all rooms
             setRooms(duplicaterooms);
         }
-        
+    
+        // Also update the selected type state
+        settype(selectedType);
     }
+    
 
     
 
