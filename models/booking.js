@@ -40,6 +40,18 @@ const bookingSchema = mongoose.Schema(
       required: true,
       default: "booked",
     },
+    localPax: {
+      type: Number,
+      required: true,
+    },
+    foreignPax: {
+      type: Number,
+      required: true,
+    },
+    totalPax: {
+      type: Number,
+      required: true,
+    }
   },
   {
     timestamps: true,

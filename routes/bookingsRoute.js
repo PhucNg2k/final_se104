@@ -13,7 +13,10 @@ router.post("/bookroom", async (req, res) => {
         fromdate,
         todate,
         totalamount,
-        totaldays
+        totaldays,
+        foreignPax,
+        localPax,
+        totalPax
     } = req.body
     
     try {
@@ -27,7 +30,10 @@ router.post("/bookroom", async (req, res) => {
             todate,
             totalamount,
             totaldays,
-            transactionId: '1234'
+            transactionId: '1234',
+            foreignPax,
+            localPax,
+            totalPax
         })
 
         const booking = await newbooking.save()
@@ -38,7 +44,10 @@ router.post("/bookroom", async (req, res) => {
                                         fromdate: fromdate,
                                         todate: todate,
                                         userid: userid,
-                                        status : booking.status
+                                        status : booking.status,
+                                        foreignPax: booking.foreignPax,
+                                        localPax: booking.localPax,
+                                        totalPax: booking.totalPax
                                     });
         await roomtemp.save()
                                     

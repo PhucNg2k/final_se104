@@ -83,6 +83,8 @@ export function Bookings() {
               <th>From</th>
               <th>To</th>
               <th>Status</th>
+              <th>Foreign Pax</th>
+              <th>Local Pax</th>
             </tr>
           </thead>
 
@@ -97,6 +99,8 @@ export function Bookings() {
                     <td>{booking.fromdate}</td>
                     <td>{booking.todate}</td>
                     <td>{booking.status}</td>
+                    <td>{booking.foreignPax}</td>
+                    <td>{booking.localPax}</td>
                   </tr>
                 );
               })}
