@@ -138,6 +138,10 @@ import Error from "../components/Error";
 import moment from "moment";
 import StripeCheckout from 'react-stripe-checkout';
 
+
+
+
+
 function Bookingscreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();

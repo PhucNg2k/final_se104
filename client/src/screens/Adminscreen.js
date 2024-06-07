@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Tabs } from "antd";
 import axios from "axios";
 import Loader from "../components/Loader";
-
 import { Navigate, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 
@@ -34,6 +33,9 @@ function Adminscreen() {
         </TabPane>
         <TabPane tab="Users" key="4">
           <Users />
+        </TabPane>
+        <TabPane tab="Report" key="5">
+          <Report />
         </TabPane>
       </Tabs>
     </div>
@@ -334,9 +336,131 @@ export function Addroom(){
 
 
 
+export function Report() {
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [monthlyRevenue, setMonthlyRevenue] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const bookingsResponse = await axios.get("/api/bookings/getallbookings");
+        const bookings = bookingsResponse.data;
+
+        const roomDataPromises = bookings.map(booking => 
+          axios.post('/api/rooms/getroombyid', { roomid: booking.roomid })
+        );
+        const roomDataResponses = await Promise.all(roomDataPromises);
+
+        const bookingsWithRoomData = bookings.map((booking, index) => {
+          const room = roomDataResponses[index].data.room;
+          const fromdate = booking.fromdate;
+          let month;
+
+          try {
+            const date = new Date(fromdate);
+            const year = date.getFullYear();
+            const monthNum = date.getMonth() + 1; // getMonth() is zero-based
+            month = `${monthNum.toString().padStart(2, '0')}-${year}`;
+          } catch (error) {
+            console.error(`Error parsing date: ${fromdate}`, error);
+            month = 'Invalid Date';
+          }
+
+          return {
+            ...booking,
+            roomType: room.type,
+            month
+          };
+        });
+
+        const revenueByMonthAndRoom = bookingsWithRoomData.reduce((acc, booking) => {
+          const { month, roomType, totalamount } = booking;
+
+          if (!acc[month]) {
+            acc[month] = { roomTypes: {}, totalRevenue: 0 };
+          }
+          if (!acc[month].roomTypes[roomType]) {
+            acc[month].roomTypes[roomType] = 0;
+          }
+          acc[month].roomTypes[roomType] += totalamount;
+          acc[month].totalRevenue += totalamount;
+          return acc;
+        }, {});
+
+        const revenueArray = Object.entries(revenueByMonthAndRoom).map(([month, { roomTypes, totalRevenue }]) => ({
+          month,
+          roomTypes: Object.entries(roomTypes).map(([roomType, revenue]) => ({
+            roomType,
+            revenue,
+            ratio: revenue / totalRevenue
+          }))
+        }));
+
+        setMonthlyRevenue(revenueArray);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  return (
+    <div className="row">
+      <div className="col-md-12">
+        <h1>Monthly Room Revenue Report</h1>
+        {monthlyRevenue.map(({ month, roomTypes }) => (
+          <div key={month}>
+            <h2>{`01-${month}`}</h2>
+            <table className="table table-dark table-bordered">
+              <thead>
+                <tr>
+                  <th>Room Type</th>
+                  <th>Revenue</th>
+                  <th>Revenue Ratio</th>
+                </tr>
+              </thead>
+              <tbody>
+                {roomTypes.map(({ roomType, revenue, ratio }) => (
+                  <tr key={roomType}>
+                    <td>{roomType}</td>
+                    <td>{revenue.toFixed(2)} VND</td>
+                    <td>{(ratio * 100).toFixed(2)}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}   
+          
 
 
 
+
+
+
+
+   
+
+  
+      
 
 
 
