@@ -204,20 +204,20 @@ function Bookingscreen() {
     if (room) {
       calculateTotalAmount(room.room.rentperday, totaldays);
     }
-  }, [foreignPax, localPax]);
+  }, );
 
   const calculateTotalAmount = (rentPerDay, totalDays) => {
-    let amount = rentPerDay * totalDays;
+    let totalamount = rentPerDay * totalDays;
 
     if (foreignPax > 0) {
-      amount *= 1.5; // Multiply by 1.5 if there are any foreign guests
+      totalamount *= 1.5; // Multiply by 1.5 if there are any foreign guests
     }
 
-    if (totalPax >2) {
-      amount *= 1.25; // Increase by 25% for each person beyond the first two
+    if (totalPax > 2) {
+      totalamount *= room.room.surcharge; // Increase by 25% for each person beyond the first two
     }
 
-    setTotalAmount(amount);
+    setTotalAmount(totalamount);
   };
 
   async function bookRoom() {

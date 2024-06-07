@@ -149,7 +149,7 @@ export function Rooms() {
   return (
     <div className="row">
       <div className="col-md-12">
-        <h1>Bookings</h1>
+        <h1>Rooms</h1>
         {loading && <Loader />}
 
         <table className="table table-bordered table-dark">
@@ -161,6 +161,7 @@ export function Rooms() {
               <th>Rent per day</th>
               <th>Max count</th>
               <th>Phone Number</th>
+              <th>Surcharge</th>
             </tr>
           </thead>
 
@@ -175,6 +176,7 @@ export function Rooms() {
                     <td>{room.rentperday}</td>
                     <td>{room.maxcount}</td>
                     <td>{room.phoneNumber}</td>
+                    <td>{room.surcharge}</td>
                   </tr>
                 );
               })}
@@ -263,6 +265,7 @@ export function Addroom(){
   const [description, setdescription] = useState()
   const [phoneNumber, setPhonenumber] = useState()
   const [type, settype] = useState()
+  const [surcharge, setsurcharge] = useState()
   const [imageurl1, setimageurl1] = useState()
   const [imageurl2, setimageurl2] = useState()
   const [imageurl3, setimageurl3] = useState()
@@ -270,7 +273,7 @@ export function Addroom(){
 
   async function addRoom() {
     const newroom = {
-      name, rentperday, maxcount, description, phoneNumber, type,
+      name, rentperday, maxcount, description, phoneNumber, type, surcharge,
       imageurls: [imageurl1, imageurl2, imageurl3] 
     }
 
@@ -308,6 +311,8 @@ export function Addroom(){
         value={description} onChange={(e) => {setdescription(e.target.value)}} />
         <input type="text" className="form-control" placeholder="phone number"
         value={phoneNumber} onChange={(e) => {setPhonenumber(e.target.value)}} />
+        <input type="text" className="form-control" placeholder="surcharge"
+        value={surcharge} onChange={(e) => {setsurcharge(e.target.value)}} />
 
       </div>
       <div className="col-md-5">

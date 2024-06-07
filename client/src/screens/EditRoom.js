@@ -13,7 +13,8 @@ function EditRoom() {
     type: '',
     rentperday: '',
     maxcount: '',
-    phoneNumber: ''
+    phoneNumber: '',
+    surcharge: ''
   });
 
   useEffect(() => {
@@ -26,7 +27,8 @@ function EditRoom() {
           type: response.data.room.type,
           rentperday: response.data.room.rentperday,
           maxcount: response.data.room.maxcount,
-          phoneNumber: response.data.room.phoneNumber
+          phoneNumber: response.data.room.phoneNumber,
+          surcharge: response.data.room.surcharge
         });
         setLoading(false);
       } catch (error) {
@@ -85,6 +87,10 @@ function EditRoom() {
           <div className="form-group">
             <label>Phone Number</label>
             <input type="text" className="form-control" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label>Surcharge</label>
+            <input type="text" className="form-control" name="surcharge" value={formData.surcharge} onChange={handleChange} />
           </div>
           <button type="submit" className="btn btn-primary">Save</button>
         </form>

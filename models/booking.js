@@ -43,6 +43,7 @@ const bookingSchema = mongoose.Schema(
     localPax: {
       type: Number,
       required: true,
+      min: [0, 'foreignPax phải là số lớn hơn hoặc bằng 0'] 
     },
     foreignPax: {
       type: Number,

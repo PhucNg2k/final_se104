@@ -36,12 +36,12 @@ router.post("/addroom", async (req, res) => {
 
 router.put('/updateroom/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, type, rentperday, maxcount, phoneNumber } = req.body;
+  const { name, type, rentperday, maxcount, phoneNumber, surcharge } = req.body;
 
   try {
     const room = await Room.findByIdAndUpdate(
       id,
-      { name, type, rentperday, maxcount, phoneNumber },
+      { name, type, rentperday, maxcount, phoneNumber, surcharge },
       { new: true }
     );
     res.json(room);

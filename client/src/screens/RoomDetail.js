@@ -45,6 +45,7 @@ function RoomDetails() {
           <p>Rent per day: {room.rentperday}</p>
           <p>Max count: {room.maxcount}</p>
           <p>Phone Number: {room.phoneNumber}</p>
+          <p>Surcharge: {room.surcharge}</p>
           {/* Add form fields to edit room information */}
         </div>
       )}
