@@ -9,7 +9,8 @@ import Loginscreen from './screens/Loginscreen';
 import Profilescreen from './screens/Profilescreen';
 import Adminscreen from './screens/Adminscreen';
 import Landingscreen from './screens/Landingscreen';
-
+import EditRoom from './screens/EditRoom';
+import RoomDetails from './screens/RoomDetail';
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
       
         <Route path='/admin' exact Component={Adminscreen}/>
         <Route path='/' exact Component={Landingscreen}/>
+        <Route path='/rooms/:id' exact Component={RoomDetails}/>
+        <Route path="/rooms/:id/edit" exact Component={EditRoom} />
       </Routes>
       
       

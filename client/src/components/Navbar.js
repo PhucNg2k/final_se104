@@ -2,6 +2,7 @@ import React from "react";
 
 function Navbar() {
   const user = JSON.parse(localStorage.getItem("currentUser"));
+  
   function logout() {
     localStorage.removeItem("currentUser");
     window.location.href = "/login";
@@ -12,6 +13,7 @@ function Navbar() {
         <a class="navbar-brand" href="/home">
           Shey Rooms
         </a>
+        
         <button
           class="navbar-toggler"
           type="button"
@@ -30,6 +32,7 @@ function Navbar() {
             {user ? (
               <>
                 <div class="dropdown">
+                    
                   <button
                     class="btn btn-secondary dropdown-toggle"
                     type="button"
@@ -40,10 +43,23 @@ function Navbar() {
                   >
                     <i class= "fa fa-user"></i>{user.name}
                   </button>
+                  
                   <div
                     class="dropdown-menu"
                     aria-labelledby="dropdownMenuButton"
                   >
+                    {user.isAdmin && (
+                      <a
+                      className="btn btn-primary ml-3"
+                      href="/admin"
+                      style={{
+                        fontWeight: 'bold',
+                        color: '#fff'
+                      }}
+                    >
+                      Admin
+                    </a>
+                    )}
                     <a class="dropdown-item" href="/profile">
                       Profile
                     </a>

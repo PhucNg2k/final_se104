@@ -9,6 +9,8 @@ function Room({ room, fromdate, todate }) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+
+  
   return (
     <div className="row bs">
       

@@ -3,6 +3,7 @@ import { Tabs } from "antd";
 import axios from "axios";
 import Loader from "../components/Loader";
 
+import { Navigate, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 
 
@@ -15,7 +16,7 @@ function Adminscreen() {
     }
   })
 
-  console.log(JSON.parse(localStorage.getItem("currentUser")).isAdmin)
+  //console.log(JSON.parse(localStorage.getItem("currentUser")).isAdmin)
   return (
     <div className="mt-3 ml-3 mr-3 bs">
       <h2 className="text-center" style={{ fontSize: "30px" }}>
@@ -67,12 +68,15 @@ export function Bookings() {
 
     fetchData();
   }, []);
+  
 
   return (
     <div className="row">
       <div className="col-md-12">
         <h1>Bookings</h1>
         {loading && <Loader />}
+
+        
 
         <table className="table table-bordered table-dark">
           <thead className="bs">
@@ -113,7 +117,7 @@ export function Rooms() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -131,6 +135,10 @@ export function Rooms() {
 
     fetchData();
   }, []);
+
+  const handleRowClick = (roomId) => {
+    navigate(`/rooms/${roomId}/edit`);
+  };
 
   return (
     <div className="row">
@@ -154,7 +162,7 @@ export function Rooms() {
             {rooms.length &&
               rooms.map((room) => {
                 return (
-                  <tr>
+                  <tr key={room._id} onClick={() => handleRowClick(room._id)} style={{ cursor: "pointer" }}>
                     <td>{room._id}</td>
                     <td>{room.name}</td>
                     <td>{room.type}</td>
@@ -167,7 +175,7 @@ export function Rooms() {
           </tbody>
         </table>
 
-        {rooms.length && <h1>There are total {rooms.length} bookings</h1>}
+        {rooms.length && <h1>There are total {rooms.length} rooms</h1>}
       </div>
     </div>
   );

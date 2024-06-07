@@ -41,7 +41,7 @@ function Registerscreen() {
       }
 
     } else {
-      alert("Password doesnot match");
+      alert("Password does not match");
     }
   }
 
