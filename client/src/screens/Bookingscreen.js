@@ -144,7 +144,25 @@ function Bookingscreen() {
   const [room, setRoom] = useState();
   
   const [foreignPax, setForeignPax] = useState(0);
+  const handleForeignPaxChange = (e) => {
+    const value = Math.max(0, Math.min(room.room.maxcount,parseInt(e.target.value))); 
+    setForeignPax(value);
+    if (value + localPax <= room.room.maxcount) {
+      setForeignPax(value);
+    } else {
+      setForeignPax(room.room.maxcount - localPax);
+    }
+  };
   const [localPax, setLocalPax] = useState(0);
+  const handleLocalPaxChange = (e) => {
+    const value = Math.max(0, Math.min(room.room.maxcount,parseInt(e.target.value))); 
+    setLocalPax(value);
+    if (value + foreignPax <= room.room.maxcount) {
+      setLocalPax(value);
+    } else {
+      setLocalPax(room.room.maxcount - foreignPax);
+    }
+  };
   const [totalPax, setTotalPax] = useState(0);
 
   let { roomid, fromdate, todate } = useParams();
@@ -258,7 +276,7 @@ function Bookingscreen() {
                     <input
                       type="number"
                       value={foreignPax}
-                      onChange={(e) => setForeignPax(e.target.value)}
+                      onChange={handleForeignPaxChange}
                       style={{ marginLeft: "10px" }}
                     />
                   </p>
@@ -267,7 +285,7 @@ function Bookingscreen() {
                     <input
                       type="number"
                       value={localPax}
-                      onChange={(e) => setLocalPax(e.target.value)}  
+                      onChange={handleLocalPaxChange}  
                       style={{ marginLeft: "10px" }}
                     />
                   </p>
