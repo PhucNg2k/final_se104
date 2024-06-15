@@ -115,6 +115,7 @@ export function Bookings() {
           <thead className="bs">
             <tr>
               <th>Booking Id</th>
+              <th>Name</th>
               <th>Identity number</th>
               <th>Room</th>
               <th>From</th>
@@ -130,6 +131,7 @@ export function Bookings() {
               return (
                 <tr key={booking._id}>
                   <td>{booking._id}</td>
+                  <td>{user.name || 'N/A'}</td>
                   <td>{user.cmnd || 'N/A'}</td>
                   <td>{booking.room}</td>
                   <td>{booking.fromdate}</td>
