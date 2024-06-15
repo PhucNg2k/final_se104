@@ -11,7 +11,7 @@ function Navbar() {
     <div>
       <nav class="navbar navbar-expand-lg">
         <a class="navbar-brand" href="/home">
-          Shey Rooms
+          HOTEL
         </a>
         
         <button

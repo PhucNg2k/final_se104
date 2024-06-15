@@ -6,6 +6,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 
 
+
 const { TabPane } = Tabs;
 function Adminscreen() {
 
@@ -47,44 +48,71 @@ export default Adminscreen;
 
 
 // Bookings list component
-
 export function Bookings() {
-  const [bookings, setbookings] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [users, setUsers] = useState({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await (
-          await axios.get("/api/bookings/getallbookings")
-        ).data;
-        setbookings(data);
+        const bookingsResponse = await axios.get("api/bookings/getallbookings");
+        const bookingsData = bookingsResponse.data;
+
+        const validUser = bookingsData.filter(booking => booking.userid);
+        const usersData = {};
+
+        await Promise.all( bookingsData.map(async (booking) => {
+          try {
+            const userid = booking.userid;
+            const userResponse = await axios.get(`/api/users/getuser/${userid}`);
+            usersData[userid] = userResponse.data;
+          } catch (userError) {
+            console.error(`Error fetching user with ID ${booking.userid}:`, userError);
+          }
+        }));
+
+        
+
+
+        setBookings(bookingsData); // Set only valid bookings
+        setUsers(usersData);
+
+        
+
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching bookings:", error);
         setLoading(false);
         setError(error);
       }
     };
 
     fetchData();
+
+    console.log(bookings)
+    console.log(users)
+    
   }, []);
-  
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="row">
       <div className="col-md-12">
         <h1>Bookings</h1>
-        {loading && <Loader />}
-
-        
-
         <table className="table table-bordered table-dark">
           <thead className="bs">
             <tr>
               <th>Booking Id</th>
-              <th>User Id</th>
+              <th>Identity number</th>
               <th>Room</th>
               <th>From</th>
               <th>To</th>
@@ -93,31 +121,31 @@ export function Bookings() {
               <th>Local Pax</th>
             </tr>
           </thead>
-
           <tbody>
-            {bookings.length &&
-              bookings.map((booking) => {
-                return (
-                  <tr>
-                    <td>{booking._id}</td>
-                    <td>{booking.userid}</td>
-                    <td>{booking.room}</td>
-                    <td>{booking.fromdate}</td>
-                    <td>{booking.todate}</td>
-                    <td>{booking.status}</td>
-                    <td>{booking.foreignPax}</td>
-                    <td>{booking.localPax}</td>
-                  </tr>
-                );
-              })}
+            {bookings.map((booking) => {
+              const user = users[booking.userid] || {};
+              return (
+                <tr key={booking._id}>
+                  <td>{booking._id}</td>
+                  <td>{user.cmnd || 'N/A'}</td>
+                  <td>{booking.room}</td>
+                  <td>{booking.fromdate}</td>
+                  <td>{booking.todate}</td>
+                  <td>{booking.status}</td>
+                  <td>{booking.foreignPax}</td>
+                  <td>{booking.localPax}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
-
-        {bookings.length && <h1>There are total {bookings.length} bookings</h1>}
+        {bookings.length > 0 && <h1>There are total {bookings.length} bookings</h1>}
       </div>
     </div>
   );
 }
+
+
 //Room list component
 export function Rooms() {
   const [rooms, setRooms] = useState([]);
@@ -203,9 +231,7 @@ export function Users() {
         const response = await axios.get("/api/users/getallusers");
         const data = response.data;
         setUsers(data);
-        console.log(data);
-        console.log(users);
-
+        
         setLoading(false);
       } catch (error) {
         console.log(error);
