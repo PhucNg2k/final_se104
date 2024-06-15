@@ -38,6 +38,9 @@ function Adminscreen() {
         <TabPane tab="Report" key="5">
           <Report />
         </TabPane>
+        <TabPane tab="Payment" key="6">
+          <Payment />
+        </TabPane>
       </Tabs>
     </div>
   );
@@ -480,25 +483,88 @@ export function Report() {
     </div>
   );
 }   
-          
 
+export function Payment() {
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const bookingsResponse = await axios.get('/api/bookings/getallbookings');
+        const bookings = bookingsResponse.data;
 
+        // Tạo các promise để lấy thông tin phòng
+        const roomDataPromises = bookings.map(booking =>
+          axios.post('/api/rooms/getroombyid', { roomid: booking.roomid })
+        );
+        const roomDataResponses = await Promise.all(roomDataPromises);
 
+        // Kết hợp dữ liệu đặt phòng với thông tin phòng
+        const bookingsWithRoomData = bookings.map((booking, index) => {
+          const room = roomDataResponses[index].data.room;
+          return {
+            ...booking,
+            roomType: room.type,
+            rentperday: room.rentperday
+          };
+        });
 
+        setBookings(bookingsWithRoomData);
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-   
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
-  
-      
-
-
-
-
-
-
-
-
-
-
+  return (
+    <div className="row">
+      <h1>Hóa Đơn</h1>
+      {bookings.map(booking => (
+        <div key={booking._id} className="col-md-12">
+          <h2>Hóa Đơn #{booking._id}</h2>
+          <table className="table table-dark table-bordered">
+            <tbody>
+              <tr>
+                <th>User Id</th>
+                <td>{booking.userid}</td>
+              </tr>
+              <tr>
+                <th>Room Id</th>
+                <td>{booking.roomid}</td>
+              </tr>
+              <tr>
+                <th>Room Type</th>
+                <td>{booking.roomType}</td>
+              </tr>
+              <tr>
+                <th>Rent per day</th>
+                <td>{booking.rentperday} VND</td>
+              </tr>
+              <tr>
+                <th>Total Days</th>
+                <td>{booking.totaldays}</td>
+              </tr>
+              <tr>
+                <th>Total Amount</th>
+                <td>{booking.totalamount} VND</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </div>
+  );
+}
