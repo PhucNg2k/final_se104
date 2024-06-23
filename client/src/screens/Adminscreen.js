@@ -395,10 +395,11 @@ export function Report() {
           let month;
 
           try {
+            console.log(fromdate.split('-')[2])
             const date = new Date(fromdate);
             const year = date.getFullYear();
-            const monthNum = date.getMonth() + 1; // getMonth() is zero-based
-            month = `${monthNum.toString().padStart(2, '0')}-${year}`;
+            const monthNum = date.getDate() + 1; // getMonth() is zero-based
+            month = `${fromdate.split('-')[1]}-${fromdate.split('-')[2]}`;
           } catch (error) {
             console.error(`Error parsing date: ${fromdate}`, error);
             month = 'Invalid Date';
@@ -433,7 +434,15 @@ export function Report() {
             ratio: revenue / totalRevenue
           }))
         }));
+        
+        revenueArray.sort((a, b) => {
+          
 
+          const [monthA, yearA] = a.month.split('-').map(Number);
+          const [monthB, yearB] = b.month.split('-').map(Number);
+          return new Date(yearA, monthA) - new Date(yearB, monthB);
+        });
+        
         setMonthlyRevenue(revenueArray);
         setLoading(false);
       } catch (error) {
@@ -460,7 +469,7 @@ export function Report() {
         <h1>Monthly Room Revenue Report</h1>
         {monthlyRevenue.map(({ month, roomTypes }) => (
           <div key={month}>
-            <h2>{`01-${month}`}</h2>
+            <h2>{`${month}`}</h2>
             <table className="table table-dark table-bordered">
               <thead>
                 <tr>
